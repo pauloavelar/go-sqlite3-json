@@ -10,7 +10,7 @@ import (
 func init() {
 	sql.Register(DialectName, &sqlite.SQLiteDriver{
 		ConnectHook: func(conn *sqlite.SQLiteConn) error {
-			for name, fn := range functions.Enabled {
+			for name, fn := range functions.Available {
 				if err := conn.RegisterFunc(name, fn, true); err != nil {
 					return err
 				}

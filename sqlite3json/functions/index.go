@@ -1,7 +1,7 @@
 package functions
 
 var (
-	Enabled = map[string]interface{}{
+	Available = map[string]interface{}{
 		fnNameJsonContains: jsonContains,
 	}
 )
