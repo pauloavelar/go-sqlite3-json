@@ -2,7 +2,6 @@ package functions
 
 import (
 	"encoding/json"
-	"fmt"
 	"reflect"
 
 	"github.com/pauloavelar/go-sqlite3-json/sqlite3json/utils"
@@ -33,23 +32,19 @@ func jsonContains(target, candidate interface{}) (bool, error) {
 	case []interface{}:
 		return utils.IsValueInArray(typedTarget, parsedCandidate), nil
 	default:
-		return false, newError("unsupported target type - incomplete implementation")
+		return false, newError(fnNameJsonContains, "unsupported target type - incomplete implementation")
 	}
 }
 
 func parseJSON(value interface{}, field string) (res interface{}, err error) {
 	if reflect.TypeOf(value).Kind() != reflect.String {
-		return false, newError("%s is not a serialized JSON: %v", field, value)
+		return false, newError(fnNameJsonContains, "%s is not a serialized JSON: %v", field, value)
 	}
 
 	err = json.Unmarshal([]byte(value.(string)), &res)
 	if err != nil {
-		return false, newError("%s is not a valid JSON: %v - %s", field, value, err.Error())
+		return false, newError(fnNameJsonContains, "%s is not a valid JSON: %v - %s", field, value, err.Error())
 	}
 
 	return res, nil
-}
-
-func newError(message string, args ...interface{}) error {
-	return fmt.Errorf(fnNameJsonContains+" - "+message, args...)
 }
